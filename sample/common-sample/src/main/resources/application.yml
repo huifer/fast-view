@@ -1,0 +1,15 @@
+hf:
+  view:
+    login: root
+    password: root
+    ip:
+      all: 123.0.*,124.2.*
+      deny: 192.*,
+
+server:
+  port: 8132
+  servlet:
+    context-path: /aaa
+logging:
+  level:
+    com.github.huifer: debug
