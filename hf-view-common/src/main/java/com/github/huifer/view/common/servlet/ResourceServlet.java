@@ -82,45 +82,29 @@ public class ResourceServlet extends HttpServlet {
 
 	}
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String contextPath = req.getContextPath();
-		String servletPath = req.getServletPath();
-		String requestURI = req.getRequestURI();
-		resp.setCharacterEncoding("utf-8");
+	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String contextPath = request.getContextPath();
+		String servletPath = request.getServletPath();
+		String requestURI = request.getRequestURI();
 
-		if (contextPath == null) { // root context
+		response.setCharacterEncoding("utf-8");
+
+		if (contextPath == null) {
 			contextPath = "";
 		}
 		String uri = contextPath + servletPath;
 		String path = requestURI.substring(contextPath.length() + servletPath.length());
 
 
-		if (path.equals("/login")) {
-			req.getSession().setAttribute(SESSION_USER_KEY, "1");
-			loginHandler.handler(path, req, resp);
-			return;
-		}
-
-		if (path.equals("")) {
-			returnResourceFile("login.html", null, resp);
-			return;
-		}
-
-		if (!ContainsUser(req)) {
-
-			returnResourceFile("login.html", null, resp);
+		if ("login".equals(path) || "login.html".equals(path)) {
+			response.sendRedirect(contextPath + "/" + servletPath + "/login.html");
 			return;
 		}
 
 
-		if (path.equals("/a")) {
-			resp.getWriter().write("aa");
-			return;
-		}
-		returnResourceFile(path, uri, resp);
-
+		returnResourceFile(path, uri, response);
 	}
+
 
 	public boolean ContainsUser(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);

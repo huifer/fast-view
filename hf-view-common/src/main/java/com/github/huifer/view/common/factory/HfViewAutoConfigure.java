@@ -18,7 +18,6 @@
 
 package com.github.huifer.view.common.factory;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,11 +72,12 @@ public class HfViewAutoConfigure {
 
 		}
 		servletServletRegistrationBean.setInitParameters(initParams);
-//		servletServletRegistrationBean.setUrlMappings(Collections.singleton("/common/*"));
 		servletServletRegistrationBean.addUrlMappings(new String[]{"/common/*"});
 		if (log.isDebugEnabled()) {
 			log.debug("开始初始化common servlet 完成.");
 		}
 		return servletServletRegistrationBean;
 	}
+
+
 }

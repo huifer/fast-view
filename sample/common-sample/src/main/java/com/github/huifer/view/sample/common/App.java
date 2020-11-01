@@ -18,16 +18,8 @@
 
 package com.github.huifer.view.sample.common;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServlet;
-
-import com.github.huifer.view.common.conf.HfViewConfig;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
@@ -37,17 +29,12 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 @SpringBootApplication
 public class App {
-	@Autowired
-	private HfViewConfig hfViewConfig;
-
-	@Autowired
-	private ApplicationContext context;
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext run = SpringApplication.run(App.class, args);
-		Map<String, HttpServlet> beansOfType = run.getBeansOfType(HttpServlet.class);
-		HfViewConfig bean = run.getBean(HfViewConfig.class);
-		System.out.println();
 	}
+
+
+
 
 }
