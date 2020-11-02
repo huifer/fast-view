@@ -1,0 +1,19 @@
+hf:
+  view:
+    login: 1
+    password: 1
+
+server:
+  port: 8132
+  servlet:
+    context-path: /a
+logging:
+  level:
+    com.github.huifer: debug
+
+
+spring:
+  redis:
+    database: 1
+    port: 6379
+    host: 127.0.0.1

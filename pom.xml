@@ -23,15 +23,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.huifer</groupId>
-	<artifactId>huifer-view</artifactId>
+	<artifactId>fast-view</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
-		<module>hf-view-redis</module>
-		<module>hf-view-common</module>
+		<module>fast-view-redis</module>
+		<module>fast-view-common</module>
 	</modules>
 
-	<name>huifer-view</name>
+	<name>fast-view</name>
 	<description>huifer‘s view!</description>
 
 	<properties>

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.huifer.fast.view.redis.starter.FastViewStarterConfig

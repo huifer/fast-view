@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "hf.view.login",
+      "type": "java.lang.String",
+      "defaultValue": "root",
+      "sourceType": "com.github.huifer.fast.view.common.conf.HfViewConfig"
+    },
+    {
+      "name": "hf.view.password",
+      "type": "java.lang.String",
+      "defaultValue": "root",
+      "sourceType": "com.github.huifer.fast.view.common.conf.HfViewConfig"
+    },
+    {
+      "name": "hv.view.ip.all",
+      "type": "java.util.List"
+    },
+    {
+      "name": "hv.view.ip.deny",
+      "type": "java.util.List"
+    }
+  ]
+}
