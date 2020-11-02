@@ -16,17 +16,19 @@
  *
  */
 
-package com.github.huifer.fast.view.redis.servlet.runner;
+package com.github.huifer.fast.view.redis.starter.runner;
 
 import java.util.List;
 
 import com.github.huifer.fast.view.redis.core.utils.DataStore;
 import com.github.huifer.fast.view.redis.core.utils.SpringRedisProperties;
+import com.github.huifer.fast.view.redis.starter.conf.HfViewRedisConfigure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.ApplicationContext;

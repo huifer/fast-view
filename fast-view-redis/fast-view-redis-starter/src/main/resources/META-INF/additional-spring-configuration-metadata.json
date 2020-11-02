@@ -13,13 +13,9 @@
       "sourceType": "com.github.huifer.fast.view.common.conf.FastViewConfig"
     },
     {
-      "name": "fast.view.ip.all",
-      "type": "java.util.List",
-      "description": "允许访问"
-    },
-    {
-      "name": "hv.view.ip.deny",
-      "type": "java.util.List"
+      "name": "fast.view.redis.urlMapping",
+      "type": "java.lang.String",
+      "description": "url访问路径"
     }
   ]
 }

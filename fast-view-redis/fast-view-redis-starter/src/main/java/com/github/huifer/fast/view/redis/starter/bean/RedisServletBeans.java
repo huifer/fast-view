@@ -16,7 +16,7 @@
  *
  */
 
-package com.github.huifer.fast.view.redis.servlet.bean;
+package com.github.huifer.fast.view.redis.starter.bean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +25,22 @@ import javax.servlet.Servlet;
 
 import com.github.huifer.fast.view.common.Const;
 import com.github.huifer.fast.view.common.DataStore;
-import com.github.huifer.fast.view.common.conf.HfViewConfig;
-import com.github.huifer.fast.view.common.factory.HfViewAutoConfigure;
+import com.github.huifer.fast.view.common.conf.FastViewConfig;
+import com.github.huifer.fast.view.common.factory.FastViewAutoConfigure;
 import com.github.huifer.fast.view.redis.servlet.FastViewRedisServlet;
+import com.github.huifer.fast.view.redis.starter.conf.HfViewRedisConfigure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -46,12 +49,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ComponentScan("com.github.huifer.view.redis.*")
-@Import(HfViewAutoConfigure.class)
+@Import({HfViewRedisConfigure.class})
 public class RedisServletBeans {
 	private static final Logger log = LoggerFactory.getLogger(RedisServletBeans.class);
 
 	@Autowired private ApplicationContext context;
 
+	@ConditionalOnBean(HfViewRedisConfigure.class)
 	@Bean
 	public ServletRegistrationBean commonServlet() {
 		if (log.isDebugEnabled()) {
@@ -60,18 +64,29 @@ public class RedisServletBeans {
 		ServletRegistrationBean<Servlet> servletServletRegistrationBean = new ServletRegistrationBean<>();
 		servletServletRegistrationBean.setServlet(new FastViewRedisServlet("/support/redis"));
 		Map<String, String> initParams = new HashMap<>(10);
-		HfViewConfig bean = context.getBean(HfViewConfig.class);
 
+		HfViewRedisConfigure bean = context.getBean(HfViewRedisConfigure.class);
 
-		if (bean != null && !bean.equals(new HfViewConfig())) {
+		if (bean != null && !bean.equals(new FastViewConfig())) {
 
-			initParams.put(Const.PARAM_NAME_USERNAME, bean.getLogin());
+			initParams.put(Const.PARAM_NAME_USERNAME, bean.getUsername());
 			initParams.put(Const.PARAM_NAME_PASSWORD, bean.getPassword());
 			DataStore.setPassword(bean.getPassword());
-			DataStore.setUsername(bean.getLogin());
+			DataStore.setUsername(bean.getUsername());
 		}
 		servletServletRegistrationBean.setInitParameters(initParams);
-		servletServletRegistrationBean.addUrlMappings("/redis/*");
+
+		HfViewRedisConfigure.Redis redis = bean.getRedis();
+		if (redis != null) {
+
+			if (!StringUtils.isEmpty(redis.getUrlMapping())) {
+				servletServletRegistrationBean.addUrlMappings(redis.getUrlMapping());
+
+			}
+		}
+		else {
+			servletServletRegistrationBean.addUrlMappings("/redis/*");
+		}
 		if (log.isDebugEnabled()) {
 			log.debug("开始初始化 redis servlet 完成.");
 		}

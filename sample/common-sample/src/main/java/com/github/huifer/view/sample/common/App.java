@@ -24,9 +24,8 @@ import java.util.Map;
 import javax.servlet.Servlet;
 
 import com.github.huifer.fast.view.common.Const;
-import com.github.huifer.fast.view.common.conf.HfViewConfig;
+import com.github.huifer.fast.view.common.conf.FastViewConfig;
 import com.github.huifer.fast.view.common.servlet.ResourceServlet;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,12 +61,12 @@ public class App {
 		ServletRegistrationBean<Servlet> servletServletRegistrationBean = new ServletRegistrationBean<>();
 		servletServletRegistrationBean.setServlet(new ResourceServlet("/support/"));
 		Map<String, String> initParams = new HashMap<>(10);
-		HfViewConfig bean = context.getBean(HfViewConfig.class);
+		FastViewConfig bean = context.getBean(FastViewConfig.class);
 
 
-		if (bean != null && !bean.equals(new HfViewConfig())) {
+		if (bean != null && !bean.equals(new FastViewConfig())) {
 
-			initParams.put(Const.PARAM_NAME_USERNAME, bean.getLogin());
+			initParams.put(Const.PARAM_NAME_USERNAME, bean.getUsername());
 			initParams.put(Const.PARAM_NAME_PASSWORD, bean.getPassword());
 
 		}

@@ -18,22 +18,9 @@
 
 package com.github.huifer.fast.view.common.factory;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.github.huifer.fast.view.common.conf.FastViewConfig;
 
-import javax.servlet.Servlet;
-
-import com.github.huifer.fast.view.common.Const;
-import com.github.huifer.fast.view.common.conf.HfViewConfig;
-import com.github.huifer.fast.view.common.servlet.ResourceServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("com.github.huifer.fast.view.*")
-@EnableConfigurationProperties(HfViewConfig.class)
-public class HfViewAutoConfigure {
+@EnableConfigurationProperties(FastViewConfig.class)
+public class FastViewAutoConfigure {
 
 }

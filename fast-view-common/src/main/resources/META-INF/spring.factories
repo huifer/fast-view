@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.github.huifer.fast.view.common.factory.HfViewAutoConfigure
+  com.github.huifer.fast.view.common.factory.FastViewAutoConfigure

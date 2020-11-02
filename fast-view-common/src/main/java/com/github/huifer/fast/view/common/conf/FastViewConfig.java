@@ -30,13 +30,13 @@ import static com.github.huifer.fast.view.common.Const.DEFAULT_USERNAME;
  *
  * @author huifer
  */
-@ConfigurationProperties(prefix = "hf.view")
-public class HfViewConfig {
+@ConfigurationProperties(prefix = "fast.view")
+public class FastViewConfig {
 
 	/**
 	 * 登录名
 	 */
-	private String login = DEFAULT_USERNAME;
+	private String username = DEFAULT_USERNAME;
 
 	/**
 	 * 密码
@@ -54,12 +54,12 @@ public class HfViewConfig {
 		this.ip = ip;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

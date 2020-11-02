@@ -18,7 +18,7 @@
 
 package com.github.huifer.fast.view.redis.starter;
 
-import com.github.huifer.fast.view.redis.servlet.bean.RedisServletBeans;
+import com.github.huifer.fast.view.redis.starter.bean.RedisServletBeans;
 
 import org.springframework.context.annotation.Import;
 
