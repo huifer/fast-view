@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+  application:
+    name: demo-servlet-zk
+
+
+server:
+  port: 9123

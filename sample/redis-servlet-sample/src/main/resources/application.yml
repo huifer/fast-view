@@ -1,5 +1,7 @@
 server:
   port: 8132
+  servlet:
+    context-path: /bac
 logging:
   level:
     com.github.huifer: debug
@@ -14,3 +16,5 @@ fast:
   view:
     username: 1
     password: 1
+    redis:
+      url-mapping: /ac/*

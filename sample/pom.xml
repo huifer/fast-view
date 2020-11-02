@@ -29,6 +29,7 @@
 	<modules>
 		<module>common-sample</module>
 		<module>redis-servlet-sample</module>
+		<module>zookeeper-servlet-sample</module>
 	</modules>
 	<properties>
 		<java.version>8</java.version>
@@ -38,11 +39,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.3.4.RELEASE</version>
-		</dependency>
 
 	</dependencies>
 </project>

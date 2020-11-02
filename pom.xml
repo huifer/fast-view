@@ -29,6 +29,7 @@
 	<modules>
 		<module>fast-view-redis</module>
 		<module>fast-view-common</module>
+		<module>fast-view-zookeeper</module>
 	</modules>
 
 	<name>fast-view</name>
@@ -40,6 +41,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -51,6 +53,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+				<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-dependencies</artifactId>
+					<version>${spring-cloud.version}</version>
+					<type>pom</type>
+					<scope>import</scope>
+				</dependency>
+
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
