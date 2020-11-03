@@ -18,7 +18,12 @@
 
 package com.github.huifer.fast.view.zookeeper.core.utils;
 
+import java.util.List;
+
+import com.github.huifer.fast.view.common.model.IpPort;
 import org.apache.curator.framework.CuratorFramework;
+
+import org.springframework.cloud.zookeeper.ZookeeperProperties;
 
 /**
  *
@@ -31,8 +36,29 @@ public class FastZookeeperDataStore {
 	 */
 	public static CuratorFramework curatorFramework;
 
+	public static ZookeeperProperties zookeeperProperties;
+
+
+	public static List<IpPort> ipPorts;
+
 	private FastZookeeperDataStore() {
 		throw new IllegalStateException("Utility class");
+	}
+
+	public static List<IpPort> getIpPorts() {
+		return ipPorts;
+	}
+
+	public static void setIpPorts(List<IpPort> ipPorts) {
+		FastZookeeperDataStore.ipPorts = ipPorts;
+	}
+
+	public static ZookeeperProperties getZookeeperProperties() {
+		return zookeeperProperties;
+	}
+
+	public static void setZookeeperProperties(ZookeeperProperties zookeeperProperties) {
+		FastZookeeperDataStore.zookeeperProperties = zookeeperProperties;
 	}
 
 	public static CuratorFramework getCuratorFramework() {

@@ -8,3 +8,15 @@ spring:
 
 server:
   port: 9123
+logging:
+  level:
+    com.github.huifer: debug
+
+
+
+fast:
+  view:
+    password: 1
+    username: 1
+    zk:
+      url-mapping: /ac/*

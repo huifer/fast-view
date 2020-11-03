@@ -18,10 +18,43 @@
 
 package com.github.huifer.fast.view.zookeeper.servlet;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.github.huifer.fast.view.common.servlet.ResourceServlet;
+import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperInfoService;
+import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperInfoServiceImpl;
+
 /**
  *
  *
  * @author huifer
  */
-public class FastZookeeperServlet {
+public class FastZookeeperServlet extends ResourceServlet {
+	ZookeeperInfoService zookeeperInfoService = new ZookeeperInfoServiceImpl();
+
+	public FastZookeeperServlet(String resourcePath) {
+		super("support/zk");
+	}
+
+	@Override
+	protected void handlerOtherUri(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String contextPath = req.getContextPath();
+		String servletPath = req.getServletPath();
+		String requestURI = req.getRequestURI();
+
+		resp.setCharacterEncoding("utf-8");
+
+		if (contextPath == null) {
+			contextPath = "";
+		}
+
+		String uri = contextPath + servletPath;
+		String path = requestURI.substring(contextPath.length() + servletPath.length());
+		if (path.startsWith("/info")) {
+			zookeeperInfoService.handler(path, req, resp);
+		}
+	}
 }

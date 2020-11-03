@@ -16,13 +16,21 @@
  *
  */
 
-package com.github.huifer.fast.view.redis.starter;
+package com.github.huifer.fast.view.zookeeper.servlet.service;
 
-import com.github.huifer.fast.view.redis.starter.bean.RedisServletBeans;
+import java.io.IOException;
 
-import org.springframework.context.annotation.Import;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.zookeeper.common.X509Exception;
 
-@Import(value = {RedisServletBeans.class})
-public class FastViewStarterConfig {
+/**
+ *
+ * zookeeper 信息接口
+ * @author huifer
+ */
+public interface ZookeeperInfoService {
+	void handler(String path, HttpServletRequest req, HttpServletResponse resp) throws IOException;
+
 }

@@ -115,7 +115,7 @@ public class ResourceServlet extends HttpServlet {
 						|| path.startsWith("/js") //
 						|| path.startsWith("/img"))) {
 			if (contextPath.equals("") || contextPath.equals("/")) {
-				response.sendRedirect("/login.html");
+				response.sendRedirect(contextPath + "/login.html");
 			}
 			else {
 				if ("".equals(path)) {

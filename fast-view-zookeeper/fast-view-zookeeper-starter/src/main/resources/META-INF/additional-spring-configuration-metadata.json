@@ -1,0 +1,21 @@
+{
+  "properties": [
+    {
+      "name": "fast.view.username",
+      "type": "java.lang.String",
+      "defaultValue": "root",
+      "sourceType": "com.github.huifer.fast.view.common.conf.FastViewConfig"
+    },
+    {
+      "name": "fast.view.password",
+      "type": "java.lang.String",
+      "defaultValue": "root",
+      "sourceType": "com.github.huifer.fast.view.common.conf.FastViewConfig"
+    },
+    {
+      "name": "fast.view.zk.urlMapping",
+      "type": "java.lang.String",
+      "description": "url访问路径"
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+<!--
+  ~
+  ~ Copyright 2020 HuiFer All rights reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>zookeeper</title>
+    <link href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <el-table
+                :data="zkNodeList"
+                style="width: 100%">
+            <el-table-column
+                    prop="ip"
+                    label="主机"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="port"
+                    label="端口"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="model"
+                    label="模式">
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="100">
+                <template slot-scope="scope">
+                    <el-button @click="showFourCmd(scope.row)" type="text" size="small">四字命令</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+
+
+    <el-dialog
+            title="zk 四字命令"
+            :visible.sync="zk_four_show"
+            width="30%"
+    >
+        <el-select v-model="curr_cmd" placeholder="请选择">
+            <el-option
+                    v-for="item in cmdList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
+
+        <el-button type="primary" @click="sendCmd">send</el-button>
+
+
+        <span slot="footer" class="dialog-footer">
+        <el-input type="textarea" v-model="cmdResult" placeholder="请等待结果"></el-input>
+        </span>
+    </el-dialog>
+</div>
+</body>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                cmdList: [
+                    {
+                        value: 'conf',
+                        label: 'conf'
+                    }, {
+                        value: 'cons',
+                        label: 'cons'
+                    }, {
+                        value: 'crst',
+                        label: 'crst'
+                    }, {
+                        value: 'dump',
+                        label: 'dump'
+                    }, {
+                        value: 'envi',
+                        label: 'envi'
+                    }, {
+                        value: 'ruok',
+                        label: 'ruok'
+                    }, {
+                        value: 'srst',
+                        label: 'srst'
+                    }, {
+                        value: 'srvr',
+                        label: 'srvr'
+                    }, {
+                        value: 'stat',
+                        label: 'stat'
+                    }, {
+                        value: 'wchs',
+                        label: 'wchs'
+                    }, {
+                        value: 'wchc',
+                        label: 'wchc'
+                    }, {
+                        value: 'wchp',
+                        label: 'wchp'
+                    }, {
+                        value: 'mntr',
+                        label: 'mntr'
+                    }
+                ],
+                zk_four_show: false,
+                curr_cmd: "",
+                zkNodeList: [{
+                    ip: '127.0.0.1',
+                    port: '2181',
+                    model: 'standalone'
+                },],
+                curr: {
+                    ip: "",
+                    port: ""
+                },
+                cmdResult: ""
+            }
+        },
+        methods: {
+            infoList() {
+                axios.get("info/list").then(resp => {
+                    this.zkNodeList = resp.data.data;
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            showFourCmd(row) {
+                this.zk_four_show = true
+                this.curr.ip = row.ip;
+                this.curr.port = row.port;
+            },
+            sendCmd() {
+                console.log(this.curr);
+                if (!this.curr_cmd) {
+                    this.$message.error('选择具体的四字命令');
+                } else {
+                    axios.post("info/four/cmd", {
+                        ip: this.curr.ip,
+                        port: this.curr.port,
+                        cmd: this.curr_cmd
+                    })
+                        .then(resp => {
+                            this.cmdResult = resp.data.data
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        })
+                }
+            }
+        },
+        created: function () {
+            console.log("hello");
+            this.infoList();
+        }
+    })
+</script>
+</html>

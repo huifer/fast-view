@@ -19,6 +19,11 @@
 package com.github.huifer.fast.view.zookeeper.starter.runner;
 
 import com.github.huifer.fast.view.zookeeper.core.api.FastViewCuratorFrameworkFactory;
+import com.github.huifer.fast.view.zookeeper.core.utils.FastZookeeperDataStore;
+import com.github.huifer.fast.view.zookeeper.core.utils.ZookeeperPropertiesUtils;
+import org.apache.curator.framework.CuratorFramework;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +40,8 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class FastZookeeperRunner implements CommandLineRunner {
+	private static final Logger log = LoggerFactory.getLogger(FastZookeeperRunner.class);
+
 	@Autowired
 	private ApplicationContext context;
 
@@ -46,12 +53,15 @@ public class FastZookeeperRunner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		ZookeeperProperties zookeeperProperties = context.getBean(ZookeeperProperties.class);
-		if (zookeeperProperties != null) {
-			String connectString = zookeeperProperties.getConnectString();
-			if (!StringUtils.isEmpty(connectString)) {
-				System.out.println("hello");
-			}
+		FastZookeeperDataStore.setZookeeperProperties(zookeeperProperties);
+		String connectString = zookeeperProperties.getConnectString();
+		if (!StringUtils.isEmpty(connectString)) {
+			CuratorFramework curatorFramework = fastViewCuratorFrameworkFactory.factory(null, null);
+			FastZookeeperDataStore.setCuratorFramework(curatorFramework);
 		}
+		FastZookeeperDataStore.setIpPorts(ZookeeperPropertiesUtils.getIpPorts(zookeeperProperties));
+
 
 	}
+
 }
