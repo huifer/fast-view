@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.github.huifer.fast.view.common.servlet.ResourceServlet;
 import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperInfoService;
 import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperInfoServiceImpl;
+import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperNodeService;
+import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperNodeServiceImpl;
 
 /**
  *
@@ -34,6 +36,8 @@ import com.github.huifer.fast.view.zookeeper.servlet.service.ZookeeperInfoServic
  */
 public class FastZookeeperServlet extends ResourceServlet {
 	ZookeeperInfoService zookeeperInfoService = new ZookeeperInfoServiceImpl();
+
+	ZookeeperNodeService zkNodeService = new ZookeeperNodeServiceImpl();
 
 	public FastZookeeperServlet(String resourcePath) {
 		super("support/zk");
@@ -55,6 +59,9 @@ public class FastZookeeperServlet extends ResourceServlet {
 		String path = requestURI.substring(contextPath.length() + servletPath.length());
 		if (path.startsWith("/info")) {
 			zookeeperInfoService.handler(path, req, resp);
+		}
+		if (path.startsWith("/node")) {
+			zkNodeService.handler(path, req, resp);
 		}
 	}
 }

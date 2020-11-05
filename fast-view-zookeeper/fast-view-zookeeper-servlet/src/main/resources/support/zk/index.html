@@ -29,34 +29,44 @@
 </head>
 <body>
 <div id="app">
-    <div>
-        <el-table
-                :data="zkNodeList"
-                style="width: 100%">
-            <el-table-column
-                    prop="ip"
-                    label="主机"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="port"
-                    label="端口"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="model"
-                    label="模式">
-            </el-table-column>
-            <el-table-column
-                    fixed="right"
-                    label="操作"
-                    width="100">
-                <template slot-scope="scope">
-                    <el-button @click="showFourCmd(scope.row)" type="text" size="small">四字命令</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-    </div>
+
+    <el-tabs type="border-card">
+        <el-tab-pane label="zookeeper基本信息">
+            <div>
+                <el-table
+                        :data="zkNodeList"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="ip"
+                            label="主机"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="port"
+                            label="端口"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="model"
+                            label="模式">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="showFourCmd(scope.row)" type="text" size="small">四字命令</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="zookeeper 数据信息">
+            <el-tree :data="tree" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+
+        </el-tab-pane>
+    </el-tabs>
 
 
     <el-dialog
@@ -140,20 +150,43 @@
                 zk_four_show: false,
                 curr_cmd: "",
                 zkNodeList: [
-                    {
-                        ip: '127.0.0.1',
-                        port: '2181',
-                        model: 'standalone'
-                    },
+                    // {
+                    //     ip: '127.0.0.1',
+                    //     port: '2181',
+                    //     model: 'standalone'
+                    // },
                 ],
                 curr: {
                     ip: "",
                     port: ""
                 },
-                cmdResult: ""
+                cmdResult: "",
+                tree: [{
+                    label: '/',
+                    name: "/",
+                    children: [
+                        // {
+                        //     label: '二级 1-1',
+                        //     children: [
+                        //         {
+                        //             label: '三级 1-1-1'
+                        //         }
+                        //     ]
+                        // }
+                    ]
+                }],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                },
+                childList: []
             }
         },
         methods: {
+            handleNodeClick(data) {
+                let path = data.name
+                this.childApi(path, data);
+            },
             infoList() {
                 axios.get("info/list").then(resp => {
                     this.zkNodeList = resp.data.data;
@@ -183,6 +216,78 @@
                             console.log(e);
                         })
                 }
+            },
+            childApi(path, data) {
+                axios.post("node/children", {
+                    path: path
+                }).then(resp => {
+                    if (resp.data.code == 200) {
+
+
+                        let childList = resp.data.data;
+                        let st = data.children;
+                        for (let i in childList) {
+                            let d;
+                            if (path === "/") {
+                                d = "/" + childList[i];
+                            } else {
+                                d = path + "/" + childList[i];
+                            }
+                            if (!(st.indexOf(childList[i]) > -1)) {
+                                data.children.push(
+                                    {
+                                        children: [],
+                                        label: childList[i],
+                                        name: d
+                                    }
+                                )
+
+                            }
+                        }
+                    }
+
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            getNodeInfo(path) {
+                axios.post("node/getNode", {
+                    path: path
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            addNode(path, data, model) {
+                axios.post("node/addNode", {
+                    path: path,
+                    data: data,
+                    model: model
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            nodeRemove(path) {
+                axios.post("node/remove", {
+                    path: path,
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            nodeUpdate(path, data) {
+                axios.post("node/update", {
+                    path: path,
+                    data: data,
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(e => {
+                    console.log(e);
+                })
             }
         },
         created: function () {

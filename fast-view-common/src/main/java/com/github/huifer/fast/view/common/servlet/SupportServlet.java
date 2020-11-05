@@ -16,19 +16,34 @@
  *
  */
 
-package com.github.huifer.fast.view.zookeeper.servlet.service;
+package com.github.huifer.fast.view.common.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.github.huifer.fast.view.common.model.ResultVo;
+import com.google.gson.Gson;
 
 /**
  *
- * zookeeper 信息接口
+ *
  * @author huifer
  */
-public interface ZookeeperInfoService {
-	void handler(String path, HttpServletRequest req, HttpServletResponse resp) throws IOException;
+public class SupportServlet {
+	private final Gson gson = new Gson();
 
+	protected void writeOk(Object data, HttpServletResponse resp) throws IOException {
+		ResultVo ok = new ResultVo("ok", data, 200);
+		resp.getWriter().write(gson.toJson(ok));
+	}
+
+	protected void writeError(Object data, HttpServletResponse resp) throws IOException {
+		ResultVo ok = new ResultVo("error", data, 400);
+		resp.getWriter().write(gson.toJson(ok));
+	}
+
+	public Gson getGson() {
+		return gson;
+	}
 }

@@ -18,10 +18,30 @@
 
 package com.github.huifer.fast.view.zookeeper.core.api;
 
+import java.util.List;
+
+import com.github.huifer.fast.view.zookeeper.core.model.ZkNodeInfo;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.zookeeper.CreateMode;
+
 /**
  * zookeeper node operation
  *
  * @author huifer
  */
 public interface ZookeeperNodeOperation {
+
+	boolean addNode(CuratorFramework curatorFramework, String path, String data, CreateMode mode);
+
+
+	ZkNodeInfo getNodeInfo(CuratorFramework curatorFramework, String path);
+
+
+	List<String> getChild(CuratorFramework curatorFramework, String path) throws Exception;
+
+
+	boolean removeNode(CuratorFramework curatorFramework, String path);
+
+	boolean updateNode(CuratorFramework curatorFramework, String path, String data);
 }
+

@@ -1,7 +1,7 @@
 server:
   port: 8132
-#  servlet:
-#    context-path: /abcd
+  servlet:
+    context-path: /abcd
 logging:
   level:
     com.github.huifer: debug

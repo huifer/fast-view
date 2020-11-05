@@ -1,0 +1,125 @@
+swagger: "2.0"
+info:
+  title: zoopeeper api
+  description: zoopeeper api
+  version: 1.0.0
+host: http
+schemes:
+  - https
+paths:
+  /addNode:
+    post:
+      summary: create zookeeper node
+      operationId: addNode
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/AddNodeParam'
+      responses:
+        200:
+          description: add success
+
+  /getNode:
+    get:
+      summary: get node info
+      operationId: getNode
+      parameters:
+        - in: body
+          name: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: get zookeeper node success
+          schema:
+            $ref: '#/definitions/ZkNodeInfo'
+
+  /children:
+    post:
+      summary: get zookeeper node childs
+      operationId: children
+      parameters:
+        - in: body
+          name: path
+          type: string
+      responses:
+        200:
+          description: get zookeeper node childs success
+          schema:
+            type: array
+            format: string
+
+  /remove:
+    post:
+      summary: remove node path
+      operationId: remove
+      parameters:
+        - in: body
+          name: body
+          type: string
+      responses:
+        200:
+          description: remove node path success
+  /update:
+    post:
+      summary: update node path data
+      description: update
+      parameters:
+        - in: body
+          required: true
+          name: body
+          schema:
+            $ref: '#/definitions/AddNodeParam'
+      responses:
+        200:
+          description: update success
+
+definitions:
+  AddNodeParam:
+    properties:
+      path:
+        type: string
+        description: node path
+      data:
+        type: string
+        description: node data
+      model:
+        type: string
+        description: node model
+
+
+  ZkNodeInfo:
+    properties:
+      data:
+        type: string
+        description: node_data
+      type:
+        type: string
+        description: node_type
+      zkStat:
+        $ref: '#/definitions/Stat'
+  Stat:
+    properties:
+      czxid:
+        type: number
+      mzxid:
+        type: number
+      ctime:
+        type: number
+      mtime:
+        type: number
+      version:
+        type: number
+      cversion:
+        type: number
+      aversion:
+        type: number
+      ephemeralOwner:
+        type: number
+      dataLength:
+        type: number
+      numChildren:
+        type: number
+      pzxid:
+        type: number

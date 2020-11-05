@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * zookeeper 信息接口
+ *
  * @author huifer
  */
-public interface ZookeeperInfoService {
+public interface ZookeeperNodeService {
 	void handler(String path, HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 }
