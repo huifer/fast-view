@@ -20,9 +20,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>zookeeper</title>
     <link href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" rel="stylesheet">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -37,25 +37,25 @@
                         :data="zkNodeList"
                         style="width: 100%">
                     <el-table-column
-                            prop="ip"
                             label="主机"
+                            prop="ip"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="port"
                             label="端口"
+                            prop="port"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="model"
-                            label="模式">
+                            label="模式"
+                            prop="model">
                     </el-table-column>
                     <el-table-column
                             fixed="right"
                             label="操作"
                             width="100">
                         <template slot-scope="scope">
-                            <el-button @click="showFourCmd(scope.row)" type="text" size="small">四字命令</el-button>
+                            <el-button @click="showFourCmd(scope.row)" size="small" type="text">四字命令</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -63,32 +63,115 @@
         </el-tab-pane>
 
         <el-tab-pane label="zookeeper 数据信息">
-            <el-tree :data="tree" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+
+            <el-row>
+                <el-col :span="12">
+
+
+                    <el-tree
+                            :data="tree"
+                            :default-expanded-keys="showLabel"
+                            :props="defaultProps"
+                            @node-click="handleNodeClick"
+                            highlight-current
+                            node-key="label"
+                            ref="tree" style="margin-top:20px;height:520px;overflow-y: auto;">
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ node.label }}</span>
+                    <span>
+                        <el-button
+
+                                @click="() => add(data,true)"
+                                size="mini"
+                                type="text">
+                            新增
+                        </el-button>
+                        <el-button
+                                @click="() => del(node, data)"
+                                size="mini"
+                                type="text"
+                                v-if="node.label != '/'">
+                            删除
+                        </el-button>
+                    </span>
+                </span>
+                    </el-tree>
+
+                </el-col>
+                <el-col :span="12">
+                    <div>
+                        <el-card class="box-card">
+                            <div class="clearfix" slot="header">
+                                <span>节点信息</span>
+
+                            </div>
+                            <div v-if="select_path != ''">
+                                <span>path: {{select_path}}</span><br/>
+                                <span>data : {{nodeInfo.data}}</span><br/>
+                                <span>type : {{nodeInfo.type}}</span><br/>
+                                <span>czxid: {{nodeInfo.stat.czxid}}</span><br/>
+                                <span>mzxid: {{nodeInfo.stat.mzxid}}</span><br/>
+                                <span>ctime: {{nodeInfo.stat.ctime}}</span><br/>
+                                <span>mtime: {{nodeInfo.stat.mtime}}</span><br/>
+                                <span>version: {{nodeInfo.stat.version}}</span><br/>
+                                <span>cversion: {{nodeInfo.stat.cversion}}</span><br/>
+                                <span>aversion: {{nodeInfo.stat.aversion}}</span><br/>
+                                <span>ephemeralOwner: {{nodeInfo.stat.ephemeralOwner}}</span><br/>
+                                <span>dataLength: {{nodeInfo.stat.dataLength}}</span><br/>
+                                <span>numChildren: {{nodeInfo.stat.numChildren}}</span><br/>
+                                <span>pzxid: {{nodeInfo.stat.pzxid}}</span><br/>
+                            </div>
+                        </el-card>
+                    </div>
+                </el-col>
+            </el-row>
 
         </el-tab-pane>
     </el-tabs>
 
 
     <el-dialog
-            title="zk 四字命令"
             :visible.sync="zk_four_show"
+            title="zk 四字命令"
             width="30%"
     >
-        <el-select v-model="curr_cmd" placeholder="请选择">
+        <el-select placeholder="请选择" v-model="curr_cmd">
             <el-option
-                    v-for="item in cmdList"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    v-for="item in cmdList">
             </el-option>
         </el-select>
 
-        <el-button type="primary" @click="sendCmd">send</el-button>
-
-
-        <span slot="footer" class="dialog-footer">
-        <el-input type="textarea" v-model="cmdResult" placeholder="请等待结果"></el-input>
+        <el-button @click="sendCmd" type="primary">send</el-button>
+        <span class="dialog-footer" slot="footer">
+        <el-input placeholder="请等待结果" type="textarea" v-model="cmdResult"></el-input>
         </span>
+    </el-dialog>
+
+
+    <el-dialog
+            :visible.sync="zk_node_add"
+            title="新增节点"
+            width="30%"
+    >
+        <span>path: <el-input placeholder="请输入内容" v-model="addNodeParam.path"></el-input></span><br/>
+        <span>data: <el-input placeholder="请输入内容" v-model="addNodeParam.data"></el-input></span><br/>
+        <span>
+            model:
+            <el-select placeholder="请选择" v-model="addNodeParam.model">
+            <el-option
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    v-for="item in zk_node_model">
+            </el-option>
+        </el-select>
+        </span>
+        <el-button @click="addNode" type="primary">确定</el-button>
+
+
     </el-dialog>
 </div>
 </body>
@@ -105,6 +188,37 @@
         el: '#app',
         data: function () {
             return {
+                addNodeParam: {
+                    path: "",
+                    data: "",
+                    model: ""
+                },
+                showLabel: [],
+                zk_node_add: false,
+                zk_node_model: [
+                    {
+                        value: 'PERSISTENT',
+                        label: 'PERSISTENT'
+                    }, {
+                        value: 'PERSISTENT_SEQUENTIAL',
+                        label: 'PERSISTENT_SEQUENTIAL'
+                    }, {
+                        value: 'EPHEMERAL',
+                        label: 'EPHEMERAL'
+                    }, {
+                        value: 'EPHEMERAL_SEQUENTIAL',
+                        label: 'EPHEMERAL_SEQUENTIAL'
+                    }, {
+                        value: 'CONTAINER',
+                        label: 'CONTAINER'
+                    }, {
+                        value: 'PERSISTENT_WITH_TTL',
+                        label: 'PERSISTENT_WITH_TTL'
+                    }, {
+                        value: 'PERSISTENT_SEQUENTIAL_WITH_TTL',
+                        label: 'PERSISTENT_SEQUENTIAL_WITH_TTL'
+                    }
+                ],
                 cmdList: [
                     {
                         value: 'conf',
@@ -167,9 +281,11 @@
                     children: [
                         // {
                         //     label: '二级 1-1',
+                        //     name: "二级 1-1",
                         //     children: [
                         //         {
-                        //             label: '三级 1-1-1'
+                        //             label: '三级 1-1-1',
+                        //             name: "三级 1-1-1",
                         //         }
                         //     ]
                         // }
@@ -179,17 +295,105 @@
                     children: 'children',
                     label: 'label'
                 },
-                childList: []
+                childList: [],
+                select_path: "",
+                nodeInfo: {
+                    data: "",
+                    type: "",
+                    stat: {
+                        czxid: "",
+                        mzxid: "",
+                        ctime: "",
+                        mtime: "",
+                        version: "",
+                        cversion: "",
+                        aversion: "",
+                        ephemeralOwner: "",
+                        dataLength: "",
+                        numChildren: "",
+                        pzxid: ""
+                    }
+                },
+                zk_node_change: false,
             }
         },
+        watch: {},
         methods: {
+            deleteNodeButton(data) {
+                this.nodeRemoveApi(data.label);
+                this.getNodeInfo(this.select_path);
+            },
+            addNode() {
+                console.log(this.addNodeParam);
+                this.addNodeApi(this.addNodeParam.path, this.addNodeParam.data, this.addNodeParam.model);
+            },
+            changeNodeButton() {
+                this.zk_node_change = true;
+            },
+            addNodeButton() {
+                this.zk_node_add = true;
+            },
+            add(data, bool) {
+
+                if (bool) {
+
+
+                    this.zk_node_add = true;
+
+
+                    this.addNodeApi(this.addNodeParam.path, this.addNodeParam.data, this.addNodeParam.model);
+                    if (this.addNodeParam.path != "") {
+
+                        const newChild = {
+                            name: this.addNodeParam.path,
+                            label: this.addNodeParam.path,
+                            children: []
+                        };
+                        if (!data.children) {
+                            this.$set(data, 'children', []);
+                        }
+                        data.children.push(newChild);
+                    }
+                } else {
+                    const newChild = {
+                        name: this.addNodeParam.path,
+                        label: this.addNodeParam.path,
+                        children: []
+                    };
+                    if (!data.children) {
+                        this.$set(data, 'children', []);
+                    }
+                    data.children.push(newChild);
+                }
+            },
+
+            del(node, data) {
+                const parent = node.parent;
+                const children = parent.data.children || parent.data;
+                const index = children.findIndex(d => d.id === data.id);
+                children.splice(index, 1);
+                this.nodeRemoveApi(data.label);
+            },
             handleNodeClick(data) {
+                this.defaultProps = data;
                 let path = data.name
+                this.select_path = data.name
                 this.childApi(path, data);
+                this.getNodeInfo(path);
             },
             infoList() {
                 axios.get("info/list").then(resp => {
                     this.zkNodeList = resp.data.data;
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            getNodeInfo(path) {
+                this.showLabel.push(path);
+                axios.post("node/getNode", {
+                    path: path
+                }).then(resp => {
+                    this.nodeInfo = resp.data.data;
                 }).catch(e => {
                     console.log(e);
                 })
@@ -218,14 +422,16 @@
                 }
             },
             childApi(path, data) {
+                data.children = []
+
+
                 axios.post("node/children", {
                     path: path
                 }).then(resp => {
                     if (resp.data.code == 200) {
 
-
                         let childList = resp.data.data;
-                        let st = data.children;
+                        let j = []
                         for (let i in childList) {
                             let d;
                             if (path === "/") {
@@ -233,53 +439,68 @@
                             } else {
                                 d = path + "/" + childList[i];
                             }
-                            if (!(st.indexOf(childList[i]) > -1)) {
-                                data.children.push(
-                                    {
-                                        children: [],
-                                        label: childList[i],
-                                        name: d
-                                    }
-                                )
 
-                            }
+                            const newChild = {
+                                name: d,
+                                label: d,
+                                children: []
+                            };
                         }
                     }
 
+                    console.log(JSON.stringify(this.tree));
+
+
                 }).catch(e => {
                     console.log(e);
                 })
             },
-            getNodeInfo(path) {
-                axios.post("node/getNode", {
-                    path: path
-                }).then(resp => {
-                    console.log(resp);
-                }).catch(e => {
-                    console.log(e);
-                })
-            },
-            addNode(path, data, model) {
+            addNodeApi(path, data, model) {
                 axios.post("node/addNode", {
                     path: path,
                     data: data,
                     model: model
                 }).then(resp => {
+                    if (resp.data.code == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '添加节点成功'
+                        });
+                        this.childApi(this.select_path == '' ? "/" : this.select_path, this.defaultProps);
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: resp.data.data
+                        });
+                    }
                     console.log(resp);
                 }).catch(e => {
                     console.log(e);
                 })
             },
-            nodeRemove(path) {
+            nodeRemoveApi(path) {
                 axios.post("node/remove", {
                     path: path,
                 }).then(resp => {
-                    console.log(resp);
+                    if (resp.data.code == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '添加节点成功'
+                        });
+                        //    刷新左侧树
+                        this.childApi(this.select_path == '' || this.select_path === path ? "/" : this.select_path, this.defaultProps);
+
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: resp.data.data
+                        });
+                    }
                 }).catch(e => {
                     console.log(e);
                 })
             },
-            nodeUpdate(path, data) {
+            nodeUpdateApi(path, data) {
                 axios.post("node/update", {
                     path: path,
                     data: data,

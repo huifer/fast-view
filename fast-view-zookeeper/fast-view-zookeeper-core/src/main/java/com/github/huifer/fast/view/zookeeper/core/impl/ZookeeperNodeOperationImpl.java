@@ -49,6 +49,7 @@ public class ZookeeperNodeOperationImpl implements ZookeeperNodeOperation {
 
 
 				String path1 = curatorFramework.create()
+						.creatingParentsIfNeeded()
 						.withMode(mode)
 						.forPath(path, data.getBytes(StandardCharsets.UTF_8));
 				return path1.equals(path);
