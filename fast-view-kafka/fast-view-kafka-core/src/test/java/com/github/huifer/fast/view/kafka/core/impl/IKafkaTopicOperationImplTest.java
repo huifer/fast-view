@@ -18,7 +18,15 @@
 
 package com.github.huifer.fast.view.kafka.core.impl;
 
-import static org.junit.Assert.*;
+import java.util.Properties;
+
+import com.github.huifer.fast.view.kafka.core.api.IKafkaTopicOperation;
+import com.github.huifer.fast.view.kafka.core.model.CreateTopicParam;
+import com.github.huifer.fast.view.kafka.core.model.TopicVO;
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.junit.Before;
 
 /**
  *
@@ -26,13 +34,57 @@ import static org.junit.Assert.*;
  * @author huifer
  */
 public class IKafkaTopicOperationImplTest {
+	public final String brokerUrl = "localhost:9092";
+
+	KafkaConsumer<byte[], byte[]> consumer;
+
+	IKafkaTopicOperation kafkaTopicOperation;
+
+	private AdminClient adminClient;
+
+	@Before
+	public void initAdminClient() {
+		Properties properties = new Properties();
+		properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, brokerUrl);
+		adminClient = AdminClient.create(properties);
+		kafkaTopicOperation = new IKafkaTopicOperationImpl();
+
+
+		Properties props = new Properties();
+		props.put("bootstrap.servers", "localhost:9092");
+		props.put("group.id", "kafkatest");
+		props.put("enable.auto.commit", "true");
+		props.put("auto.offset.reset", "earliest");
+		props.put("auto.commit.interval.ms", "1000");
+		props.put("auto.commit.interval.ms", "1000");
+		props.put("key.deserializer", "org.apache.kafka.common.serialization.BytesDeserializer");
+		props.put("value.deserializer", "org.apache.kafka.common.serialization.BytesDeserializer");
+		consumer = new KafkaConsumer<>(props);
+
+	}
 
 	@org.junit.Test
 	public void createTopic() {
+		CreateTopicParam createTopicParam = new CreateTopicParam();
+		createTopicParam.setName("test");
+		createTopicParam.setPartitionsNum(4);
+		createTopicParam.setReplicationFactor((short) 1);
+
+		boolean topic = kafkaTopicOperation.createTopic(createTopicParam, adminClient);
+		if (topic) {
+			TopicVO test = kafkaTopicOperation.topicInfo("test", consumer);
+			assert test != null;
+		}
 	}
 
 	@org.junit.Test
 	public void deleteTopic() {
+		boolean test = kafkaTopicOperation.deleteTopic("test", adminClient);
+		if (test) {
+			TopicVO t2 = kafkaTopicOperation.topicInfo("test", consumer);
+			assert t2 == null;
+
+		}
 	}
 
 	@org.junit.Test

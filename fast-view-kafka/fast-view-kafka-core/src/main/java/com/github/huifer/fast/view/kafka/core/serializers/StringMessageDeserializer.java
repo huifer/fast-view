@@ -11,7 +11,7 @@ public class StringMessageDeserializer implements MessageDeserializer {
    *
    */
   private static byte[] readBytes(ByteBuffer buffer, int size) {
-    final var dest = new byte[size];
+    byte[] dest = new byte[size];
     if (buffer.hasArray()) {
       System.arraycopy(buffer.array(), buffer.arrayOffset(), dest, 0, size);
     } else {
