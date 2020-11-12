@@ -30,6 +30,7 @@
 		<module>fast-view-redis</module>
 		<module>fast-view-common</module>
 		<module>fast-view-zookeeper</module>
+		<module>fast-view-center</module>
 	</modules>
 
 	<name>fast-view</name>
