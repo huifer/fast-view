@@ -27,6 +27,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>fast-view-center-client</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>fast-view-center-client-enable</module>
+		<module>fast-view-center-client-starter</module>
+		<module>fast-view-center-client-core</module>
+	</modules>
 
 
 </project>

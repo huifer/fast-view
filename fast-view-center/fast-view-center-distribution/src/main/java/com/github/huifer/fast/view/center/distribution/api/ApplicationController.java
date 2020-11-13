@@ -13,26 +13,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.github.huifer.fast.view.center.distribution;
+package com.github.huifer.fast.view.center.distribution.api;
 
-import com.github.huifer.fast.view.center.core.beans.ConsumerBeans;
+import com.github.huifer.fast.view.center.core.repository.ApplicationRepository;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
+ *
  * @author huifer
  */
-@SpringBootApplication(scanBasePackages= "com.github.huifer.fast")
-@Import(ConsumerBeans.class)
-public class DistributionApp {
+@RestController
+@RequestMapping("/app")
+public class ApplicationController {
+	@Autowired
+	private ApplicationRepository applicationRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DistributionApp.class, args);
-	}
 }

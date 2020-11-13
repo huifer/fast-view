@@ -13,26 +13,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.github.huifer.fast.view.center.distribution;
+package com.github.huifer.fast.view.center.core.repository;
 
-import com.github.huifer.fast.view.center.core.beans.ConsumerBeans;
+import com.github.huifer.fast.view.center.core.model.ApplicationEntity;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
+ *
  * @author huifer
  */
-@SpringBootApplication(scanBasePackages= "com.github.huifer.fast")
-@Import(ConsumerBeans.class)
-public class DistributionApp {
+public interface ApplicationRepository extends JpaRepository<ApplicationEntity, Integer> {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DistributionApp.class, args);
-	}
+
+	@Query("select a from ApplicationEntity a where a.applicationName = :name")
+	ApplicationEntity findByName(@Param(value = "name") String name);
 }

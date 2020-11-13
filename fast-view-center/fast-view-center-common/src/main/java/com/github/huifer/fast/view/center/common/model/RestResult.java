@@ -13,26 +13,50 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.github.huifer.fast.view.center.distribution;
-
-import com.github.huifer.fast.view.center.core.beans.ConsumerBeans;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+package com.github.huifer.fast.view.center.common.model;
 
 /**
+ * http rest result 
  *
  * @author huifer
  */
-@SpringBootApplication(scanBasePackages= "com.github.huifer.fast")
-@Import(ConsumerBeans.class)
-public class DistributionApp {
+public class RestResult<T> {
+	private int code;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DistributionApp.class, args);
+	private String message;
+
+	private T data;
+
+	public RestResult(int code, String message, T data) {
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
 	}
 }

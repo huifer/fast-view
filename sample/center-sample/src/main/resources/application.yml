@@ -1,0 +1,14 @@
+server:
+  port: 9032
+spring:
+  application:
+    name: abc
+  redis:
+    host: 127.0.0.1
+    database: 100
+    cluster:
+      nodes:
+        - localhost:6380
+        - localhost:6381
+        - localhost:6381
+

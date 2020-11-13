@@ -30,6 +30,7 @@
 		<module>common-sample</module>
 		<module>redis-servlet-sample</module>
 		<module>zookeeper-servlet-sample</module>
+		<module>center-sample</module>
 	</modules>
 	<properties>
 		<java.version>8</java.version>

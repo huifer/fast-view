@@ -13,26 +13,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.github.huifer.fast.view.center.distribution;
+package com.github.huifer.fast.view.center.client.core.beans;
 
-import com.github.huifer.fast.view.center.core.beans.ConsumerBeans;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  *
+ *
  * @author huifer
  */
-@SpringBootApplication(scanBasePackages= "com.github.huifer.fast")
-@Import(ConsumerBeans.class)
-public class DistributionApp {
+@Component
+@ComponentScan(value = "com.github.huifer.fast.view.center.client.*")
+public class ConsumerBeans {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DistributionApp.class, args);
-	}
 }

@@ -32,6 +32,7 @@
 		<module>fast-view-center-client</module>
 		<module>fast-view-center-core</module>
 		<module>fast-view-center-distribution</module>
+		<module>fast-view-center-common</module>
 	</modules>
 
 
