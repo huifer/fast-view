@@ -121,6 +121,9 @@ public class IRedisServiceInfoImpl implements IRedisServerInfo {
 
 	private Properties redisInfo(RedisConnectionConfig config) {
 		RedisTemplate<String, String> factory = redisConnectionCacheFactory.factory(config);
+		if (factory == null) {
+			return null;
+		}
 		return getConnection(factory).info();
 	}
 

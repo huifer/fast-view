@@ -34,4 +34,7 @@ public interface RvRedisConnectionFactory {
 	 * @return redisTemplate
 	 */
 	RedisTemplate factory(RedisConnectionConfig config);
+
+	RedisTemplate factory(RedisConnectionConfig config, boolean cluster);
+
 }

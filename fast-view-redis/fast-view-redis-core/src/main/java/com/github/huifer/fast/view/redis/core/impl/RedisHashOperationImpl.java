@@ -24,6 +24,8 @@ import com.github.huifer.fast.view.redis.core.api.RedisHashOperation;
 import com.github.huifer.fast.view.redis.core.api.RvRedisConnectionFactory;
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 public class RedisHashOperationImpl implements RedisHashOperation {
 
@@ -54,5 +56,35 @@ public class RedisHashOperationImpl implements RedisHashOperation {
 	public void upAndSave(RedisConnectionConfig config, String k, String oldField, String newField, String v) {
 		this.del(config, k, oldField);
 		this.add(config, k, newField, v);
+	}
+
+
+	@Override
+	public void add(RedisTemplate redisTemplate, String k, String field, String v) {
+		redisTemplate.opsForHash().put(k, field, v);
+
+	}
+
+	@Override
+	public Map get(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForHash().entries(k);
+	}
+
+	@Override
+	public void del(RedisTemplate redisTemplate, String k, String field) {
+		redisTemplate.opsForHash().delete(k, field);
+
+	}
+
+	@Override
+	public void update(RedisTemplate redisTemplate, String k, String field, String v) {
+		redisTemplate.opsForHash().put(k, field, v);
+
+	}
+
+	@Override
+	public void upAndSave(RedisTemplate redisTemplate, String k, String oldField, String newField, String v) {
+		this.del(redisTemplate, k, oldField);
+		this.add(redisTemplate, k, newField, v);
 	}
 }

@@ -18,6 +18,7 @@
 
 package com.github.huifer.fast.view.redis.core.model;
 
+import java.util.List;
 import java.util.Objects;
 
 /** redis 的链接配置对象 */
@@ -29,6 +30,16 @@ public class RedisConnectionConfig {
 	private String pwd;
 
 	private int dbIndex;
+
+	private List<String> nodes;
+
+	public List<String> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<String> nodes) {
+		this.nodes = nodes;
+	}
 
 	@Override
 	public String toString() {

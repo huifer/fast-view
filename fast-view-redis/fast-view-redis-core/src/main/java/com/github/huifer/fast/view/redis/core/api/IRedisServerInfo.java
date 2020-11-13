@@ -33,12 +33,19 @@ import com.github.huifer.fast.view.redis.core.model.info.RedisCliInfoReplication
 import com.github.huifer.fast.view.redis.core.model.info.RedisCliInfoServer;
 import com.github.huifer.fast.view.redis.core.model.info.RedisCliInfoStats;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  * redis 服务相关信息
  * @author huifer
  * */
 public interface IRedisServerInfo {
+
+
+
+
+
 	/**
 	 * 版本
 	 *

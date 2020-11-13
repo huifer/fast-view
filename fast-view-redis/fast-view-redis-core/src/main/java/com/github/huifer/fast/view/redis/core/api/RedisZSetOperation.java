@@ -22,12 +22,28 @@ import java.util.Set;
 
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  *  redis 的 zset 数据类型操作
  * @author huifer
  * */
 public interface RedisZSetOperation extends IRedisOperationLabel {
+	void add(RedisTemplate redisTemplate, String k, double score, String member);
+
+	void del(RedisTemplate redisTemplate, String key, String member);
+
+	Set get(RedisTemplate redisTemplate, String key);
+
+	void update(RedisTemplate redisTemplate, String k, double score, String member);
+
+	Long size(RedisTemplate redisTemplate, String k);
+
+	Set get(RedisTemplate redisTemplate, String k, long start, long end);
+
+	void removeOldSaveNew(RedisTemplate redisTemplate, String k, String oldMember, String newMember, double score);
+
 
 	/**
 	 * zset 添加数据

@@ -51,4 +51,24 @@ public class RedisStringOperationImpl implements RedisStringOperation {
 	public void update(RedisConnectionConfig config, String k, String v) {
 		getRedisTemplate(config).opsForValue().set(k, v);
 	}
+
+	@Override
+	public void add(RedisTemplate redisTemplate, String k, String v) {
+		redisTemplate.opsForValue().set(k, v);
+	}
+
+	@Override
+	public Object get(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForValue().get(k);
+	}
+
+	@Override
+	public void delete(RedisTemplate redisTemplate, String k) {
+		redisTemplate.delete(k);
+	}
+
+	@Override
+	public void update(RedisTemplate redisTemplate, String k, String v) {
+		redisTemplate.opsForValue().set(k, v);
+	}
 }

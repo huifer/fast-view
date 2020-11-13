@@ -23,6 +23,8 @@ import java.util.List;
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 import com.github.huifer.fast.view.redis.core.model.RedisKeyInfo;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  *  redis key 的操作接口
@@ -30,6 +32,17 @@ import com.github.huifer.fast.view.redis.core.model.RedisKeyInfo;
  * @author huifer
  * */
 public interface RedisKeysOperation {
+
+	List<RedisKeyInfo> keys(RedisTemplate redisTemplate, String keyRegion);
+
+	Boolean del(RedisTemplate redisTemplate, String key);
+
+	Boolean expire(RedisTemplate redisTemplate, String key, long expire);
+
+	void rename(RedisTemplate redisTemplate, String on, String nn);
+
+	Long deleteKeyInBatch(RedisTemplate redisTemplate, List<String> keys);
+
 
 	/**
 	 * redis 节点信息

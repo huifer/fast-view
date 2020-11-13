@@ -22,12 +22,25 @@ import java.util.Map;
 
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  * redis 的 hash 数据类型操作
  * @author huifer
  * */
 public interface RedisHashOperation extends IRedisOperationLabel {
+
+	void add(RedisTemplate redisTemplate, String k, String field, String v);
+
+	Map get(RedisTemplate redisTemplate, String k);
+
+	void del(RedisTemplate redisTemplate, String k, String field);
+
+	void update(RedisTemplate redisTemplate, String k, String field, String v);
+
+	void upAndSave(RedisTemplate redisTemplate, String k, String oldField, String newField, String v);
+
 
 	/**
 	 * @param config redis 连接配置

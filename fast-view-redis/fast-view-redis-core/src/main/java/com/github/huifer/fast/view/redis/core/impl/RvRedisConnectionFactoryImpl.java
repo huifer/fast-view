@@ -41,7 +41,6 @@ public class RvRedisConnectionFactoryImpl implements RvRedisConnectionFactory {
 			return DataStore.getRedisTemplate();
 		}
 		else {
-
 			log.debug("手动创建redisTemplate");
 
 			JedisConnectionFactory conn = new JedisConnectionFactory();
@@ -60,5 +59,10 @@ public class RvRedisConnectionFactoryImpl implements RvRedisConnectionFactory {
 			return template;
 		}
 
+	}
+
+	@Override
+	public RedisTemplate factory(RedisConnectionConfig config, boolean cluster) {
+		throw new RuntimeException("应用内不允许该方法创建");
 	}
 }

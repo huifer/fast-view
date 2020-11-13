@@ -25,6 +25,7 @@ import com.github.huifer.fast.view.redis.core.api.RedisZSetOperation;
 import com.github.huifer.fast.view.redis.core.api.RvRedisConnectionFactory;
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
 public class RedisZSetOperationImpl implements RedisZSetOperation {
@@ -98,5 +99,72 @@ public class RedisZSetOperationImpl implements RedisZSetOperation {
 		del(config, k, oldMember);
 		// 创建新的
 		add(config, k, score, newMember);
+	}
+
+	@Override
+	public void add(RedisTemplate redisTemplate, String k, double score, String member) {
+		Set<ZSetOperations.TypedTuple<Object>> zset = new HashSet<>();
+		zset.add(
+				new ZSetOperations.TypedTuple<Object>() {
+					private final String data;
+
+					private final double sc;
+
+					@Override
+					public Object getValue() {
+						return data;
+					}
+
+					@Override
+					public Double getScore() {
+						return sc;
+					}
+
+					@Override
+					public int compareTo(ZSetOperations.TypedTuple<Object> o) {
+						if (o == null) {
+							return 1;
+						}
+						return this.getScore() - o.getScore() >= 0 ? 1 : -1;
+					}
+
+					{
+						sc = score;
+						data = member;
+					}
+				});
+		redisTemplate.opsForZSet().add(k, zset);
+	}
+
+	@Override
+	public void del(RedisTemplate redisTemplate, String key, String member) {
+		redisTemplate.opsForZSet().remove(key, member);
+	}
+
+	@Override
+	public Set get(RedisTemplate redisTemplate, String key) {
+		return redisTemplate.opsForZSet().rangeWithScores(key, 0, -1);
+	}
+
+	@Override
+	public void update(RedisTemplate redisTemplate, String k, double score, String member) {
+		redisTemplate.opsForZSet().add(k, member, score);
+
+	}
+
+	@Override
+	public Long size(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForZSet().size(k);
+	}
+
+	@Override
+	public Set get(RedisTemplate redisTemplate, String k, long start, long end) {
+		return redisTemplate.opsForZSet().rangeWithScores(k, start, end);
+	}
+
+	@Override
+	public void removeOldSaveNew(RedisTemplate redisTemplate, String k, String oldMember, String newMember, double score) {
+		del(redisTemplate, k, oldMember);
+		add(redisTemplate, k, score, newMember);
 	}
 }

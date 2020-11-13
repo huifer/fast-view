@@ -105,4 +105,54 @@ public class RedisKeysService implements RedisKeysOperation {
 		RedisTemplate redisTemplate = this.factory.factory(config);
 		return redisTemplate.delete(keys);
 	}
+
+	@Override
+	public List<RedisKeyInfo> keys(RedisTemplate redisTemplate, String keyRegion) {
+		RedisConnection connection =
+				RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+
+		// 通过 key region 进行搜索
+		Set<byte[]> keys = connection.keys(keyRegion.getBytes());
+		StringRedisSerializer stringSerializer = new StringRedisSerializer(StandardCharsets.UTF_8);
+
+		List<RedisKeyInfo> result = new ArrayList<>();
+
+		// 数据封装
+		for (byte[] key : keys) {
+			String keyName = stringSerializer.deserialize(key);
+
+			Long expire = redisTemplate.getExpire(keyName);
+
+			DataType type = connection.type(key);
+			RedisDataType redisDataType = RedisDataType.valueOf(type.name());
+			RedisKeyInfo row = new RedisKeyInfo(keyName, redisDataType, expire);
+			// 从缓存中拿出key的value
+			result.add(row);
+		}
+
+		return result;
+	}
+
+	@Override
+	public Boolean del(RedisTemplate redisTemplate, String key) {
+		return redisTemplate.delete(key);
+	}
+
+	@Override
+	public Boolean expire(RedisTemplate redisTemplate, String key, long expire) {
+		return redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+
+	}
+
+	@Override
+	public void rename(RedisTemplate redisTemplate, String on, String nn) {
+		redisTemplate.rename(on, nn);
+
+	}
+
+	@Override
+	public Long deleteKeyInBatch(RedisTemplate redisTemplate, List<String> keys) {
+		return redisTemplate.delete(keys);
+
+	}
 }

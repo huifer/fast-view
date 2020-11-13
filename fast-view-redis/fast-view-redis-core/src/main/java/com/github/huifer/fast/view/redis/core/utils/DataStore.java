@@ -39,6 +39,10 @@ public class DataStore {
 
 	public static RedisTemplate redisTemplate;
 
+	public static void setRedisTemplate(RedisTemplate redisTemplate) {
+		DataStore.redisTemplate = redisTemplate;
+	}
+
 	public static RedisClusterConnection clusterConnection;
 
 	public static RedisProperties.Cluster cluster;

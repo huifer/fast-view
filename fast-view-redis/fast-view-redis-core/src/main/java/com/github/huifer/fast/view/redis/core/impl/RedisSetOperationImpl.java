@@ -24,6 +24,8 @@ import com.github.huifer.fast.view.redis.core.api.RedisSetOperation;
 import com.github.huifer.fast.view.redis.core.api.RvRedisConnectionFactory;
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 public class RedisSetOperationImpl implements RedisSetOperation {
 
@@ -48,5 +50,26 @@ public class RedisSetOperationImpl implements RedisSetOperation {
 	@Override
 	public void del(RedisConnectionConfig config, String k, String v) {
 		factory.factory(config).opsForSet().remove(k, v);
+	}
+
+	@Override
+	public void add(RedisTemplate redisTemplate, String k, String v) {
+		redisTemplate.opsForSet().add(k, v);
+	}
+
+	@Override
+	public Collection get(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForSet().members(k);
+	}
+
+	@Override
+	public void update(RedisTemplate redisTemplate, String k, String ov, String nv) {
+		del(redisTemplate, k, ov);
+		redisTemplate.opsForSet().add(k, nv);
+	}
+
+	@Override
+	public void del(RedisTemplate redisTemplate, String k, String v) {
+		redisTemplate.opsForSet().remove(k, v);
 	}
 }

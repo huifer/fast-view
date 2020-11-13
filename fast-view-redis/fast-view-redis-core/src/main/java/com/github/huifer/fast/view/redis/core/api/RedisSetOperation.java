@@ -22,12 +22,22 @@ import java.util.Collection;
 
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  *  redis 的 set 数据类型操作
  * @author huifer
  * */
 public interface RedisSetOperation extends IRedisOperationLabel {
+	void add(RedisTemplate redisTemplate, String k, String v);
+
+	Collection get(RedisTemplate redisTemplate, String k);
+
+	void update(RedisTemplate redisTemplate, String k, String ov, String nv);
+
+	void del(RedisTemplate redisTemplate, String k, String v);
+
 
 	/**
 	 * 添加一个 set

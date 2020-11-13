@@ -22,13 +22,12 @@ import com.github.huifer.fast.view.center.core.beans.ConsumerBeans;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  *
  * @author huifer
  */
-@SpringBootApplication(scanBasePackages= "com.github.huifer.fast")
+@SpringBootApplication(scanBasePackages = "com.github.huifer.fast")
 @Import(ConsumerBeans.class)
 public class DistributionApp {
 

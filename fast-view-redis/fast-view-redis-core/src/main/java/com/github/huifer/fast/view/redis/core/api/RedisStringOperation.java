@@ -21,11 +21,21 @@ package com.github.huifer.fast.view.redis.core.api;
 
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 /**
  *  redis 的 string 数据类型操作
  * @author huifer
  * */
 public interface RedisStringOperation extends IRedisOperationLabel {
+	void add(RedisTemplate redisTemplate, String k, String v);
+
+	Object get(RedisTemplate redisTemplate, String k);
+
+	void delete(RedisTemplate redisTemplate, String k);
+
+	void update(RedisTemplate redisTemplate, String k, String v);
+
 	/**
 	 * 添加 键值
 	 * @param config redis 连接配置

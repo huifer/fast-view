@@ -21,12 +21,12 @@ package com.github.huifer.fast.view.redis.core.impl;
 import java.util.List;
 import java.util.UUID;
 
-
 import com.github.huifer.fast.view.redis.core.api.RedisListOperation;
 import com.github.huifer.fast.view.redis.core.api.RvRedisConnectionFactory;
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 
 public class RedisListOperationImpl implements RedisListOperation {
 
@@ -79,4 +79,49 @@ public class RedisListOperationImpl implements RedisListOperation {
 		ListOperations listOperations = factory.factory(conf).opsForList();
 		return listOperations.size(k);
 	}
+
+
+	@Override
+	public void add(RedisTemplate redisTemplate, String k, String v) {
+		redisTemplate.opsForList().rightPush(k, v);
+
+	}
+
+	@Override
+	public List get(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForList().range(k, 0, -1);
+
+	}
+
+	@Override
+	public List get(RedisTemplate redisTemplate, String k, long start, long end) {
+		return redisTemplate.opsForList().range(k, start, end);
+
+	}
+
+	@Override
+	public void update(RedisTemplate redisTemplate, String k, String ov, String nv) {
+		List list = get(redisTemplate, k);
+		redisTemplate.opsForList().remove(k, list.size(), ov);
+		add(redisTemplate, k, nv);
+	}
+
+	@Override
+	public void removeByRow(RedisTemplate redisTemplate, String k, int row) {
+		ListOperations listOperations = redisTemplate.opsForList();
+		UUID uuid = UUID.randomUUID();
+		listOperations.set(k, row, "__delete__" + uuid.toString());
+		listOperations.remove(k, 0, "__delete__" + uuid.toString());
+	}
+
+	@Override
+	public void del(RedisTemplate redisTemplate, String k) {
+		redisTemplate.opsForList().remove(k, 0, -1);
+	}
+
+	@Override
+	public Long size(RedisTemplate redisTemplate, String k) {
+		return redisTemplate.opsForList().size(k);
+	}
+
 }

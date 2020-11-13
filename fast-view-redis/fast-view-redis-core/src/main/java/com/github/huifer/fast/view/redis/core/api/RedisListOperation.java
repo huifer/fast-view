@@ -22,6 +22,8 @@ import java.util.List;
 
 import com.github.huifer.fast.view.redis.core.model.RedisConnectionConfig;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 
 /**
  *  redis 的 list 数据类型操作
@@ -89,4 +91,20 @@ public interface RedisListOperation extends IRedisOperationLabel {
 	 * @return 获取 list 的大小
 	 */
 	Long size(RedisConnectionConfig conf, String k);
+
+
+	void add(RedisTemplate redisTemplate, String k, String v);
+
+	List get(RedisTemplate redisTemplate, String k);
+
+	List get(RedisTemplate redisTemplate, String k, long start, long end);
+
+	void update(RedisTemplate redisTemplate, String k, String ov, String nv);
+
+	void removeByRow(RedisTemplate redisTemplate, String k, int row);
+
+	void del(RedisTemplate redisTemplate, String k);
+
+	Long size(RedisTemplate redisTemplate, String k);
+
 }
